@@ -1,0 +1,43 @@
+import pandas as pd
+
+# Load the dataset
+diamonds = pd.read_csv('diamonds.csv')
+
+# Q1-1. Print the first 4 and last 4 rows of the DataFrame
+result1 = pd.concat([diamonds.head(4), diamonds.tail(4)])
+print("Q1-1. First 4 and last 4 rows of the DataFrame:")
+print(result1)
+
+# Q1-2. Calculate the min, max, and average value for the 'dept' column
+# Assuming 'dept' refers to a numerical column
+result2 = {
+    "min": diamonds['depth'].min(),
+    "max": diamonds['depth'].max(),
+    "average": diamonds['depth'].mean()
+}
+print("\nQ1-2. Min, Max, and Average values for the 'depth' column:")
+print(result2)
+
+# Q1-3. List all unique 'cut' values
+result3 = diamonds['cut'].unique()
+print("\nQ1-3. Unique 'cut' values:")
+print(result3)
+
+# Q1-4. Count and print the number of diamonds for each 'cut'
+result4 = diamonds['cut'].value_counts()
+print("\nQ1-4. Count of diamonds for each 'cut':")
+print(result4)
+
+# Q1-5. Print the number of duplicated rows in the DataFrame
+result5 = diamonds.duplicated().sum()
+print("\nQ1-5. Number of duplicated rows:")
+print(result5)
+
+# Q1-6. Remove the columns marked as x, y, z from the DataFrame
+# and print the rows where the cut is 'Fair' or 'Very Good'
+filtered_diamonds = diamonds.drop(columns=['x', 'y', 'z'])
+result6 = filtered_diamonds[(diamonds['cut'] == 'Fair') | (diamonds['cut'] == 'Very Good')]
+print("\nQ1-6. Rows where 'cut' is 'Fair' or 'Very Good':")
+print(result6)
+
+
