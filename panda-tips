@@ -1,0 +1,155 @@
+# View the first and last rows
+print(df.head())   # First 5 rows
+print(df.tail())   # Last 5 rows
+
+# Basic info about the DataFrame
+print(df.info())
+
+# Summary statistics for numerical columns
+print(df.describe())
+
+# Shape of the DataFrame
+print(df.shape)    # (rows, columns)
+
+# Column names
+print(df.columns)
+
+# Data types of each column
+print(df.dtypes)
+
+
+================================================================================================
+
+
+# Select a single column
+df['column_name']        # As a Series
+df[['column_name']]      # As a DataFrame
+
+# Select multiple columns
+df[['col1', 'col2']]
+
+# Select rows by index
+df.iloc[0]  # First row
+df.iloc[1:5]  # Rows 1 to 4
+
+# Select rows by condition
+df[df['column_name'] > 50]  # Rows where 'column_name' > 50
+df[(df['col1'] > 50) & (df['col2'] < 100)]  # Multiple conditions
+
+# Select specific rows and columns
+df.loc[0:5, ['col1', 'col2']]
+================================================================================================
+
+
+
+# Drop rows with missing values
+df.dropna()
+
+# Drop columns with missing values
+df.dropna(axis=1)
+
+# Fill missing values
+df['column_name'].fillna(value=0, inplace=True)
+
+# Replace values
+df['column_name'] = df['column_name'].replace({'old_value': 'new_value'})
+
+# Remove duplicate rows
+df.drop_duplicates(inplace=True)
+
+# Rename columns
+df.rename(columns={'old_name': 'new_name'}, inplace=True)
+
+================================================================================================
+
+
+# Sort by a single column
+df.sort_values('column_name', ascending=True)
+
+# Sort by multiple columns
+df.sort_values(['col1', 'col2'], ascending=[True, False])
+
+
+================================================================================================
+
+# Group by a column and calculate aggregates
+df.groupby('column_name')['value_column'].mean()
+
+# Multiple aggregates
+df.groupby('column_name').agg({'value_column': ['mean', 'sum']})
+
+# Count occurrences
+df['column_name'].value_counts()
+
+
+================================================================================================
+
+# Filter rows
+df[df['column_name'] == 'value']
+
+# Add a new column based on a condition
+df['new_column'] = df['column_name'].apply(lambda x: 'Yes' if x > 50 else 'No')
+
+================================================================================================
+
+# Merge two DataFrames
+merged_df = pd.merge(df1, df2, on='common_column', how='inner')
+
+# Join on index
+joined_df = df1.join(df2, how='outer')
+
+# Concatenate DataFrames
+concatenated_df = pd.concat([df1, df2], axis=0)  # Vertically
+
+================================================================================================
+
+# Pivot table
+pivot = df.pivot_table(index='col1', columns='col2', values='col3', aggfunc='sum')
+
+# Apply custom functions to columns
+df['new_column'] = df['column_name'].apply(lambda x: x**2)
+
+# Iterate through rows
+for index, row in df.iterrows():
+    print(row['column_name'])
+
+# Reshape data with melt
+melted_df = pd.melt(df, id_vars=['id'], value_vars=['col1', 'col2'])
+
+# Convert data types
+df['column_name'] = df['column_name'].astype('int')
+
+
+================================================================================================
+
+import matplotlib.pyplot as plt
+
+# Simple line plot
+df['column_name'].plot(kind='line')
+
+# Histogram
+df['column_name'].plot(kind='hist')
+
+# Bar plot
+df['column_name'].value_counts().plot(kind='bar')
+
+plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
