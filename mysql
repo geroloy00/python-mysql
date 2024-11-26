@@ -1,0 +1,82 @@
+import pymysql
+
+# Establish the connection
+connection = pymysql.connect(
+    host='localhost',  # Replace with your host
+    user='root',       # Replace with your username
+    password='password', # Replace with your password
+    database='your_database' # Replace with your database name
+)
+
+try:
+    with connection.cursor() as cursor:
+        # Q2-1: Display the names of all suppliers, as well as their city
+        query1 = "SELECT supplier_name, city FROM suppliers;"
+        cursor.execute(query1)
+        result1 = cursor.fetchall()
+        print("Q2-1: Names of all suppliers and their cities:")
+        print(result1)
+
+        # Q2-2: Display all the names of suppliers that start with 'S'
+        query2 = "SELECT supplier_name FROM suppliers WHERE supplier_name LIKE 'S%';"
+        cursor.execute(query2)
+        result2 = cursor.fetchall()
+        print("\nQ2-2: Suppliers starting with 'S':")
+        print(result2)
+
+        # Q2-3: Count the number of products and the number of unique products based on pname
+        query3 = "SELECT COUNT(*) AS total_products, COUNT(DISTINCT pname) AS unique_products FROM products;"
+        cursor.execute(query3)
+        result3 = cursor.fetchall()
+        print("\nQ2-3: Total and unique products:")
+        print(result3)
+
+        # Q2-4: Count the number of Red products
+        query4 = "SELECT COUNT(*) AS red_products FROM products WHERE color = 'Red';"
+        cursor.execute(query4)
+        result4 = cursor.fetchall()
+        print("\nQ2-4: Number of Red products:")
+        print(result4)
+
+        # Q2-5: Which is the lightest product?
+        query5 = "SELECT pname, MIN(weight) AS lightest_weight FROM products;"
+        cursor.execute(query5)
+        result5 = cursor.fetchall()
+        print("\nQ2-5: Lightest product:")
+        print(result5)
+
+        # Q2-6: Sort products by product names, and then by product color
+        query6 = "SELECT * FROM products ORDER BY pname ASC, color ASC;"
+        cursor.execute(query6)
+        result6 = cursor.fetchall()
+        print("\nQ2-6: Products sorted by name and color:")
+        print(result6)
+
+        # Q2-7: Sort product names by descending order
+        query7 = "SELECT pname FROM products ORDER BY pname DESC;"
+        cursor.execute(query7)
+        result7 = cursor.fetchall()
+        print("\nQ2-7: Product names in descending order:")
+        print(result7)
+
+        # Q2-8: Display the number of products for each color
+        query8 = "SELECT color, COUNT(*) AS product_count FROM products GROUP BY color;"
+        cursor.execute(query8)
+        result8 = cursor.fetchall()
+        print("\nQ2-8: Number of products for each color:")
+        print(result8)
+
+        # Q2-9: What is the name of the supplier that supplied 200 units of product 1?
+        query9 = """
+        SELECT suppliers.supplier_name
+        FROM suppliers
+        JOIN supplies ON suppliers.supplier_id = supplies.supplier_id
+        WHERE supplies.product_id = 1 AND supplies.units = 200;
+        """
+        cursor.execute(query9)
+        result9 = cursor.fetchall()
+        print("\nQ2-9: Supplier supplying 200 units of product 1:")
+        print(result9)
+
+finally:
+    connection.close()
