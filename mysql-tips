@@ -1,0 +1,93 @@
+-- Create a database
+CREATE DATABASE sample_db;
+
+-- Use the database
+USE sample_db;
+
+-- Create tables
+CREATE TABLE suppliers (
+    supplier_id INT AUTO_INCREMENT PRIMARY KEY,
+    supplier_name VARCHAR(100),
+    city VARCHAR(100)
+);
+
+CREATE TABLE products (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    pname VARCHAR(100),
+    color VARCHAR(50),
+    weight DECIMAL(10, 2),
+    supplier_id INT,
+    FOREIGN KEY (supplier_id) REFERENCES suppliers(supplier_id)
+);
+
+-- Insert data into tables
+INSERT INTO suppliers (supplier_name, city)
+VALUES 
+('Supplier A', 'New York'),
+('Supplier B', 'Los Angeles'),
+('Supplier C', 'Chicago'),
+('Supplier D', 'San Francisco');
+
+INSERT INTO products (pname, color, weight, supplier_id)
+VALUES 
+('Product 1', 'Red', 12.5, 1),
+('Product 2', 'Blue', 8.0, 2),
+('Product 3', 'Green', 15.0, 3),
+('Product 4', 'Red', 10.0, 1),
+('Product 5', 'Blue', 20.0, 4);
+
+-- Select operations
+SELECT * FROM suppliers; -- Fetch all suppliers
+SELECT supplier_name FROM suppliers WHERE city = 'New York'; -- Filter by city
+SELECT DISTINCT color FROM products; -- Find unique product colors
+
+-- Aggregation
+SELECT color, COUNT(*) AS product_count FROM products GROUP BY color; -- Group by color
+SELECT AVG(weight) AS avg_weight, MAX(weight) AS max_weight, MIN(weight) AS min_weight FROM products; -- Aggregate functions
+
+-- Join tables
+SELECT p.pname, p.color, s.supplier_name
+FROM products p
+INNER JOIN suppliers s ON p.supplier_id = s.supplier_id; -- Inner join example
+
+-- Sorting
+SELECT * FROM products ORDER BY pname ASC; -- Sort products by name (ascending)
+SELECT * FROM products ORDER BY weight DESC; -- Sort products by weight (descending)
+
+-- Update data
+UPDATE suppliers SET city = 'Boston' WHERE supplier_name = 'Supplier A'; -- Update city
+
+-- Delete operations
+DELETE FROM products WHERE color = 'Green'; -- Delete products with specific color
+
+-- Indexing
+CREATE INDEX idx_color ON products(color); -- Index for color column
+
+-- Subqueries
+SELECT pname FROM products WHERE supplier_id IN (
+    SELECT supplier_id FROM suppliers WHERE city = 'New York'
+); -- Subquery example
+
+-- Views
+CREATE VIEW product_summary AS
+SELECT pname, color, weight FROM products WHERE weight > 10;
+
+SELECT * FROM product_summary; -- Query the view
+
+-- Transactions
+START TRANSACTION;
+UPDATE products SET weight = weight - 1 WHERE pname = 'Product 1';
+ROLLBACK; -- Undo changes
+
+-- Export and Import
+-- Export: SELECT * FROM products INTO OUTFILE '/tmp/products.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
+-- Import: LOAD DATA INFILE '/tmp/products.csv' INTO TABLE products FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
+
+-- Date and String Functions
+SELECT NOW() AS current_time, UPPER(supplier_name) AS upper_name FROM suppliers;
+SELECT CONCAT(supplier_name, ' - ', city) AS supplier_info FROM suppliers;
+
+-- Drop tables and database
+DROP TABLE products;
+DROP TABLE suppliers;
+DROP DATABASE sample_db;
